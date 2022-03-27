@@ -1,0 +1,26 @@
+server:
+  port: 8082
+ 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8083}/eureka/
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+      - id: cartModule
+        uri: lb://cart-microservice
+        predicates:
+        - Path=/cart/**
+      - id: productModule
+        uri: lb://product-microservice
+        predicates:
+        - Path=/product/**
+      - id: orderModule
+        uri: lb://order-microservice
+        predicates:
+        - Path=/order/**
